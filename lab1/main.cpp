@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <numeric>
 #include <fstream>
 #include <sstream>
@@ -34,14 +35,44 @@ std::vector<std::string> splitString(const std::string& input, char delimiter)
     return tokens;
 }
 
+std::vector<std::string> splitStringIntoTokens(const std::string& input)
+{
+    std::vector<std::string> tokens;
+
+    auto it_prev = input.begin();
+    auto it = input.begin();
+
+    std::string current_token;
+    current_token = *it;
+    while (it != input.end())
+    {
+        ++it;
+
+        if (*it != *it_prev)
+        {
+            current_token += *it;
+        }
+        else
+        {
+            tokens.push_back(current_token);
+            current_token = *it;
+        }
+
+        ++it_prev;
+    }
+
+    return tokens;
+}
+
 // "yesssss" "yes%%s"
+// ""
 bool if_string_like_mask(const std::string& str, const std::string& mask)
 {
     if (str.length() < mask.length())
     {
         return false;
     }
-    
+
     char char_repeat;
 
     auto it_regex = mask.begin();
@@ -156,21 +187,39 @@ void print_words_that_fit_mask(const std::string& input_file, const std::string&
     }
 }
 
+int main1()
+{
+    // std::vector<std::string> masks = {"%hgf%l", "ye%", "He%!", "Aw%some!"};
+    // int tests_count = masks.size();
+
+    // for (int i = 1; i <= tests_count; i++)
+    // {
+    //     print_words_that_fit_mask("in/" + std::to_string(i) + "_in.txt", masks[i - 1]);
+    // }
+
+    // for (int i = 1; i <= tests_count; ++i)
+    // {
+    //     filter_file("in/" + std::to_string(i) + "_in.txt", "out/" + std::to_string(i) + "_out.txt");
+    // }
+
+
+    // std::cout << std::endl;
+    // std::cout << std::endl;
+    // std::cout << std::endl;
+
+
+    return 0;
+}
+
 int main()
 {
-    std::vector<std::string> masks = {"%hgf%l", "ye%", "He%!", "Aw%some!"};
-    int tests_count = masks.size();
+    std::string str = "aiagggjj";
+    std::vector<std::string> tokens = splitStringIntoTokens(str);
 
-    for (int i = 1; i <= tests_count; i++)
+    for (int i = 0; i < tokens.size(); ++i)
     {
-        print_words_that_fit_mask("in/" + std::to_string(i) + "_in.txt", masks[i - 1]);
+        std::cout << tokens[i] << std::endl;
     }
-
-    for (int i = 1; i <= tests_count; ++i)
-    {
-        filter_file("in/" + std::to_string(i) + "_in.txt", "out/" + std::to_string(i) + "_out.txt");
-    }
-    
 
 
     return 0;
